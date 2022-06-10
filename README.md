@@ -1,2 +1,10 @@
 # Golang-Proxy-Scraper
-simple golang proxy scraper
+golang ProxyScraper/Checker
+
+
+# Features
+- HTTP
+- SOCK5
+- SOCK4
+
+- Proxy Checker
