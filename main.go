@@ -9,6 +9,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 var (
@@ -26,7 +28,7 @@ func GetSock4() {
 		panic(err)
 	}
 
-	fmt.Println("Writing To File...")
+	color.Green("Writing To File...")
 
 	proxies := strings.TrimSuffix(string(prox), "\n")
 	file, err := os.OpenFile("Proxy/socks4.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -40,7 +42,7 @@ func GetSock4() {
 		panic(err)
 	}
 
-	fmt.Println("Scraped! | Saved to socks4.txt")
+	color.Green("Scraped! | Saved to socks4.txt")
 
 }
 
@@ -55,7 +57,7 @@ func GetSock5() {
 		panic(err)
 	}
 
-	fmt.Println("Writing To File...")
+	color.Green("Writing To File...")
 
 	proxies := strings.TrimSuffix(string(prox), "\n")
 	file, err := os.OpenFile("Proxy/socks5.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -68,7 +70,7 @@ func GetSock5() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Scraped! | Saved to socks5.txt")
+	color.Green("Scraped! | Saved to socks5.txt")
 
 }
 
@@ -83,7 +85,7 @@ func GetHttp() {
 		panic(err)
 	}
 
-	fmt.Println("Writing To File...")
+	color.Green("Writing To File...")
 
 	proxies := strings.TrimSuffix(string(prox), "\n")
 	file, err := os.OpenFile("Proxy/http.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -96,7 +98,7 @@ func GetHttp() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Scraped! | Saved to http.txt")
+	color.Green("Scraped! | Saved to http.txt")
 
 }
 
@@ -109,7 +111,7 @@ func CheckProxies() {
 	fmt.Scanln(&path)
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		fmt.Println("File does not exist!")
+		color.Red("File does not exist!")
 		return
 	}
 
@@ -122,7 +124,7 @@ func CheckProxies() {
 	var proxy string
 	var proxyList []string
 
-	fmt.Println("Checking Proxies...")
+	color.Green("Checking Proxies...")
 
 	for {
 		_, err := fmt.Fscanln(file, &proxy)
@@ -147,16 +149,16 @@ func CheckProxies() {
 		}
 		resp, err := Client.Get("https://api.ipify.org?format=json")
 		if err != nil {
-			fmt.Printf("%s is not working\n", proxy)
+			color.Red("%s is not working\n", proxy)
 			BadProxies = append(BadProxies, proxy)
 			continue
 		}
 		defer resp.Body.Close()
-		fmt.Printf("%s is working\n", proxy)
+		color.Green("%s is working\n", proxy)
 		GoodProxies = append(GoodProxies, proxy)
 	}
 
-	fmt.Println("Writing To File...")
+	color.Green("Writing To File...")
 
 	file, err = os.OpenFile("Proxy/good.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -178,20 +180,20 @@ func CheckProxies() {
 		panic(err)
 	}
 
-	fmt.Println("Scraped! | Saved to good.txt & bad.txt")
+	color.Green("Scraped! | Saved to good.txt & bad.txt")
 
 }
 
 func main() {
 
 	var banner string = `
-	[1] Socks4
-	[2] Socks5
-	[3] HTTP
-	[4] Check Proxy
+[1] Socks4
+[2] Socks5
+[3] HTTP
+[4] Check Proxy
 	`
 
-	fmt.Println(banner)
+	color.White(banner)
 
 	var choice string
 	fmt.Printf("Enter Choice: ")
@@ -208,7 +210,7 @@ func main() {
 		wg.Add(1)
 		CheckProxies()
 	default:
-		fmt.Println("Invalid Choice!")
+		color.Red("Invalid Choice!")
 
 	}
 
